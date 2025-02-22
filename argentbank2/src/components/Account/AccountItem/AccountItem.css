@@ -1,0 +1,59 @@
+.account-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.account-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.account-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.account-amount {
+  font-size: 1.5rem;
+  color: #00bc77;
+  margin-bottom: 0.5rem;
+}
+
+.account-description {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.account-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view-transaction-btn {
+  background-color: #00bc77;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #00bc77;
+}
+
+.view-transaction-btn:hover {
+  background-color: #009c64;
+}
