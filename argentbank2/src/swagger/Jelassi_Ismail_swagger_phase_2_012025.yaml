@@ -1,0 +1,869 @@
+openapi: 3.0.1
+info:
+  title: Argent Bank API documentation
+  description: Contains all available API endpoints in this codebase
+  version: "1.0.0"
+  termsOfService: "http://swagger.io/terms/"
+servers:
+  - url: http://localhost:3001/api/v1
+    description: Argent Bank API
+
+paths:
+  /user/signin:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "200":
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Signup Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/profile:
+    post:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+      responses:
+        "200":
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/transactions:
+    post:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Transactions API
+      description: API for fetching user transactions
+      responses:
+        "200":
+          description: User transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserTransactionsResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/transaction:
+    post:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Transaction Details API
+      description: API for fetching user transaction details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserTransaction"
+      responses:
+        "200":
+          description: User transaction detail retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserTransactionResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Unknown transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      security:
+        - BearerAuth: []
+      tags:
+        - User Module
+      summary: User Transaction Update API
+      description: API for updating a user transaction details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserTransactionUpdate"
+      responses:
+        "200":
+          description: Transaction details updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserTransactionUpdateResponse"
+        "400":
+          description: Invalid Fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Unknown transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/accounts/{accountId}/transactions:
+    get:
+      tags:
+        - User Transactions Module
+      summary: Get all transactions for the current month of a specific account
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+      responses:
+        "200":
+          description: Success, returns the list of transactions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionsResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "498":
+          description: Token expired or invalid
+        "500":
+          description: Internal server error
+
+  /user/accounts/{accountId}/transactions/{transactionId}:
+    get:
+      tags:
+        - User Transactions Module
+      summary: Get details of a specific transaction
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+      responses:
+        "200":
+          description: Success, returns the transaction details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "498":
+          description: Token expired or invalid
+        "500":
+          description: Internal server error
+
+    delete:
+      tags:
+        - User Transactions Module
+      summary: Delete a specific transaction
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+      responses:
+        "200":
+          description: Success, transaction deleted
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "498":
+          description: Token expired or invalid
+        "500":
+          description: Internal server error
+
+  # Comments CRUD
+  /user/accounts/{accountId}/transactions/{transactionId}/comments:
+    post:
+      tags:
+        - User Transactions Module
+      summary: Add a comment to a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionsPostComments"
+      responses:
+        "200":
+          description: Success, returns the updated transaction with the new comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /user/accounts/{accountId}/transactions/{transactionId}/comments/{commentId}:
+    get:
+      tags:
+        - User Transactions Module
+      summary: Get a specific comment
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+            example: "67890"
+      responses:
+        "200":
+          description: Success, returns the comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "404":
+          description: Comment not found
+        "500":
+          description: Internal server error
+
+    put:
+      tags:
+        - User Transactions Module
+      summary: Update a specific comment
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+            example: "67890"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionsUpdateComments"
+      responses:
+        "200":
+          description: Success, returns the updated transaction with the new comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+    delete:
+      tags:
+        - User Transactions Module
+      summary: Delete a comment
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+            example: "67890"
+      responses:
+        "200":
+          description: Success, comment deleted
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Comment not found
+        "500":
+          description: Internal server error
+
+  # Notes CRUD
+  /user/accounts/{accountId}/transactions/{transactionId}/notes:
+    post:
+      tags:
+        - User Transactions Module
+      summary: Add a note to a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionsPostNotes"
+      responses:
+        "200":
+          description: Success, returns the updated transaction with the new note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /user/accounts/{accountId}/transactions/{transactionId}/notes/{noteId}:
+    get:
+      tags:
+        - User Transactions Module
+      summary: Get a specific note
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+        - in: path
+          name: noteId
+          required: true
+          schema:
+            type: string
+            example: "54321"
+      responses:
+        "200":
+          description: Success, returns the note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "404":
+          description: Note not found
+        "500":
+          description: Internal server error
+
+    put:
+      tags:
+        - User Transactions Module
+      summary: Update a specific note
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+        - in: path
+          name: noteId
+          required: true
+          schema:
+            type: string
+            example: "54321"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionsUpdateNotes"
+      responses:
+        "200":
+          description: Success, returns the updated transaction with the new note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+    delete:
+      tags:
+        - User Transactions Module
+      summary: Delete a note
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: "Bearer JWT_TOKEN"
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+            example: "12345"
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+            example: "98765"
+        - in: path
+          name: noteId
+          required: true
+          schema:
+            type: string
+            example: "54321"
+      responses:
+        "200":
+          description: Success, note deleted
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Note not found
+        "500":
+          description: Internal server error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        expiresIn:
+          type: integer
+
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        fullName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+
+    UserTransactionsResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+
+    UserTransaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+
+    UserTransactionResponse:
+      type: object
+      properties:
+        transaction:
+          $ref: "#/components/schemas/Transaction"
+
+    UserTransactionUpdate:
+      type: object
+      properties:
+        amount:
+          type: number
+        description:
+          type: string
+
+    UserTransactionUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    Transaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+        amount:
+          type: number
+          format: float
+        currency:
+          type: string
+        type:
+          type: string
+        category:
+          type: string
+        comments:
+          type: array
+          items:
+            type: string
+        notes:
+          type: array
+          items:
+            type: string
+
+    TransactionsResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+
+    TransactionsPostComments:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: The comment text
+
+    TransactionsUpdateComments:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: The updated comment text
+
+    TransactionsPostNotes:
+      type: object
+      properties:
+        note:
+          type: string
+          description: The note text
+
+    TransactionsUpdateNotes:
+      type: object
+      properties:
+        note:
+          type: string
+          description: The updated note text
+
+    TransactionResponse:
+      type: object
+      properties:
+        transaction:
+          $ref: "#/components/schemas/Transaction"
