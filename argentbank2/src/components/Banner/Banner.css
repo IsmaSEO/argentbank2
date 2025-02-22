@@ -1,0 +1,71 @@
+.h1 {
+  text-align: left;
+}
+
+.banner {
+  width: 100%;
+  height: 400px;
+  background-image: url(/src/assets/img/bank-tree.jpeg);
+  background-size: cover;
+  background-position: 0% 33%;
+  display: flex;
+}
+
+.banner-content {
+  background: white;
+  padding: 2rem;
+  text-align: left;
+  position: absolute;
+  top: 100px;
+  right: 50px;
+  width: 300px;
+  margin: 3rem;
+  height: 180px;
+}
+
+.banner-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: left;
+}
+
+.banner-text {
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+@media (max-width: 1024px) {
+  .banner {
+    height: 300px;
+    padding-right: 20px;
+  }
+
+  .banner-content {
+    width: 250px;
+    padding: 30px;
+    top: 45px;
+  }
+
+  .banner-title {
+    font-size: 1.2rem;
+  }
+
+  .banner-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    height: 250px;
+  }
+
+  .banner-content {
+    box-sizing: border-box;
+    top: auto;
+    right: auto;
+    width: 70%;
+    height: 195px;
+  }
+}
