@@ -9,7 +9,7 @@ servers:
     description: Argent Bank API
 
 paths:
-  /user/signin:
+  /user/login:
     post:
       tags:
         - User Module
@@ -313,47 +313,12 @@ paths:
         "500":
           description: Internal server error
 
-    delete:
-      tags:
-        - User Transactions Module
-      summary: Delete a specific transaction
-      parameters:
-        - in: header
-          name: Authorization
-          required: true
-          schema:
-            type: string
-            example: "Bearer JWT_TOKEN"
-        - in: path
-          name: accountId
-          required: true
-          schema:
-            type: string
-            example: "12345"
-        - in: path
-          name: transactionId
-          required: true
-          schema:
-            type: string
-            example: "98765"
-      responses:
-        "200":
-          description: Success, transaction deleted
-        "400":
-          description: Bad request
-        "401":
-          description: Unauthorized
-        "498":
-          description: Token expired or invalid
-        "500":
-          description: Internal server error
-
-  # Comments CRUD
-  /user/accounts/{accountId}/transactions/{transactionId}/comments:
+  # Category CRU
+  /user/accounts/{accountId}/transactions/{transactionId}/category:
     post:
       tags:
         - User Transactions Module
-      summary: Add a comment to a transaction
+      summary: Add a category to a transaction
       parameters:
         - in: header
           name: Authorization
@@ -378,10 +343,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransactionsPostComments"
+              $ref: "#/components/schemas/TransactionsPostCategory"
       responses:
         "200":
-          description: Success, returns the updated transaction with the new comment
+          description: Success, returns the updated transaction with the new category
           content:
             application/json:
               schema:
@@ -393,11 +358,11 @@ paths:
         "500":
           description: Internal server error
 
-  /user/accounts/{accountId}/transactions/{transactionId}/comments/{commentId}:
+  /user/accounts/{accountId}/transactions/{transactionId}/category/{categoryId}:
     get:
       tags:
         - User Transactions Module
-      summary: Get a specific comment
+      summary: Get a specific category
       parameters:
         - in: header
           name: Authorization
@@ -418,27 +383,27 @@ paths:
             type: string
             example: "98765"
         - in: path
-          name: commentId
+          name: categoryId
           required: true
           schema:
             type: string
             example: "67890"
       responses:
         "200":
-          description: Success, returns the comment
+          description: Success, returns the category
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionResponse"
         "404":
-          description: Comment not found
+          description: Category not found
         "500":
           description: Internal server error
 
     put:
       tags:
         - User Transactions Module
-      summary: Update a specific comment
+      summary: Update a specific category
       parameters:
         - in: header
           name: Authorization
@@ -459,7 +424,7 @@ paths:
             type: string
             example: "98765"
         - in: path
-          name: commentId
+          name: categoryId
           required: true
           schema:
             type: string
@@ -469,10 +434,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransactionsUpdateComments"
+              $ref: "#/components/schemas/TransactionsUpdateCategory"
       responses:
         "200":
-          description: Success, returns the updated transaction with the new comment
+          description: Success, returns the updated transaction with the new category
           content:
             application/json:
               schema:
@@ -481,47 +446,6 @@ paths:
           description: Invalid request
         "401":
           description: Unauthorized
-        "500":
-          description: Internal server error
-
-    delete:
-      tags:
-        - User Transactions Module
-      summary: Delete a comment
-      parameters:
-        - in: header
-          name: Authorization
-          required: true
-          schema:
-            type: string
-            example: "Bearer JWT_TOKEN"
-        - in: path
-          name: accountId
-          required: true
-          schema:
-            type: string
-            example: "12345"
-        - in: path
-          name: transactionId
-          required: true
-          schema:
-            type: string
-            example: "98765"
-        - in: path
-          name: commentId
-          required: true
-          schema:
-            type: string
-            example: "67890"
-      responses:
-        "200":
-          description: Success, comment deleted
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-        "404":
-          description: Comment not found
         "500":
           description: Internal server error
 
@@ -816,8 +740,6 @@ components:
         type:
           type: string
         category:
-          type: string
-        comments:
           type: array
           items:
             type: string
@@ -834,19 +756,19 @@ components:
           items:
             $ref: "#/components/schemas/Transaction"
 
-    TransactionsPostComments:
+    TransactionsPostCategory:
       type: object
       properties:
-        comment:
+        category:
           type: string
-          description: The comment text
+          description: The category name
 
-    TransactionsUpdateComments:
+    TransactionsUpdateCategory:
       type: object
       properties:
-        comment:
+        category:
           type: string
-          description: The updated comment text
+          description: The updated category name
 
     TransactionsPostNotes:
       type: object
