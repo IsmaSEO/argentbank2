@@ -5,6 +5,14 @@ export const loginUser = (credentials) => async (dispatch) => {
   try {
     const token = await apiService.signInUser(credentials);
     dispatch(loginSuccess(token));
+    // Vérification si Remember Me est activé pour stocker le token
+    if (credentials.rememberMe) {
+      localStorage.setItem("token", token); // Stockage du token pour une connexion persistante
+      localStorage.setItem("rememberMe", "true"); // Enregistrement de l'état Remember Me
+    } else {
+      localStorage.removeItem("rememberMe"); // Suppression de l'option Remember Me si décochée
+      localStorage.removeItem("token"); // Suppression immédiate du token
+    }
   } catch (error) {
     handleAuthError(error, dispatch);
   }
@@ -17,6 +25,15 @@ const handleAuthError = (error, dispatch) => {
     "Une erreur est survenue lors de la connexion.";
   dispatch(authError(errorMessage));
   console.error("Erreur d'authentification :", errorMessage);
+};
+
+// Fonction pour gérer la déconnexion après navigation
+export const checkAuthOnNavigation = () => (dispatch) => {
+  const rememberMe = localStorage.getItem("rememberMe") === "true";
+
+  if (!rememberMe) {
+    dispatch(logout()); // Déconnexion de l'utilisateur après navigation
+  }
 };
 
 // Fonction pour gérer la déconnexion

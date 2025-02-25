@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
-import { loginUser } from "../../redux/middleware/authMiddleware";
+import {
+  checkAuthOnNavigation,
+  loginUser,
+} from "../../redux/middleware/authMiddleware";
 import "./SignIn.css";
 
 export default function SignIn() {
@@ -14,13 +18,24 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
   const { isAuthenticated, errorMessage } = useSelector((state) => state.auth);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Vérification de l'authentification après navigation
+  useEffect(() => {
+    dispatch(checkAuthOnNavigation());
+  }, [dispatch]);
 
   // Si l'utilisateur est déjà connecté, redirection vers la page profil
   if (isAuthenticated) return <Navigate to="/profile" replace />;
 
+  // Fonction pour gérer le changement de l'état Remember Me
+  const handleCheckboxChange = () => {
+    setRememberMe(!rememberMe);
+  };
+
   // Fonction de soumission du formulaire
   const onSubmit = (data) => {
-    dispatch(loginUser(data)); // Dispatch de l'action login
+    dispatch(loginUser({ ...data, rememberMe })); // Dispatch de l'action login
   };
 
   return (
@@ -65,7 +80,12 @@ export default function SignIn() {
           </div>
 
           <div className="remember-wrapper">
-            <input type="checkbox" id="remember" />
+            <input
+              type="checkbox"
+              id="remember"
+              checked={rememberMe}
+              onChange={handleCheckboxChange}
+            />
             <label htmlFor="remember">Remember me</label>
           </div>
 
