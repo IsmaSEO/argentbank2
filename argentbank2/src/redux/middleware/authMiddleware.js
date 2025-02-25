@@ -24,5 +24,5 @@ export const handleLogout = (navigate) => (dispatch) => {
   // Réinitialisation de l'état Redux (déconnexion)
   dispatch(logout());
   // Redirection de l'utilisateur vers la page de connexion
-  navigate("/signin");
+  navigate("/login");
 };

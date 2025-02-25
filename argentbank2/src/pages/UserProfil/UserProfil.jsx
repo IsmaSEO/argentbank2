@@ -30,7 +30,7 @@ const UserProfil = () => {
   }, [dispatch, token]);
 
   // Redirection vers la page de connexion si l'utilisateur n'est pas authentifié
-  if (!isAuthenticated) return <Navigate to="/signin" replace />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   // Fonction pour activer le mode édition et préremplir les champs avec les données actuelles
   const handleEdit = () => {

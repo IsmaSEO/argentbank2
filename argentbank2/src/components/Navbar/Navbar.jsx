@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { handleLogout } from '../../redux/middleware/authMiddleware';
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { handleLogout } from "../../redux/middleware/authMiddleware";
 
 const Navbar = ({ firstName }) => {
   const currentPath = window.location.pathname;
@@ -36,7 +36,7 @@ const Navbar = ({ firstName }) => {
             </button>
           </div>
         ) : (
-          <Link className="main-nav-item" to="/signin">
+          <Link className="main-nav-item" to="/login">
             <i className="fa-solid fa-user-circle"></i>
             Sign In
           </Link>

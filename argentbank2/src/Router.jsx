@@ -9,7 +9,7 @@ import UserProfil from "./pages/UserProfil/UserProfil";
 const AppRouter = () => {
   const routes = createBrowserRouter([
     { path: "/", element: <Home /> },
-    { path: "/signin", element: <SignIn /> },
+    { path: "/login", element: <SignIn /> },
     { path: "/signup", element: <SignUp /> },
     { path: "/profile", element: <UserProfil /> },
     { path: "/not-found", element: <NotFound /> },
